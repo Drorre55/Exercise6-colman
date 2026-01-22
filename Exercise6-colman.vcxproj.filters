@@ -18,6 +18,9 @@
     <ClCompile Include="MainTrain.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Survivor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Survivor.h">
