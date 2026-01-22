@@ -43,7 +43,49 @@ Tribe* AddSurvivor(Tribe* t, Survivor* s) {
 }
 
 Tribe* DuplicateTribe(Tribe* source) {
-	return;
+	Tribe* tribeCpy = malloc(sizeof(source));
+	if (tribeCpy == NULL) {
+		printf("Problem with malloc. can't duplicate Tribe");
+		return NULL;
+	}
+
+	size_t bandanaSize = strlen(source->bandana_color) + 1;
+	char* tempBandanaColor = malloc(bandanaSize);
+	if (tempBandanaColor == NULL) {
+		printf("Problem with malloc. can't duplicate Tribe");
+		free(tribeCpy);
+		return NULL;
+	}
+	tribeCpy->bandana_color = tempBandanaColor;
+	strcpy_s(tribeCpy->bandana_color, bandanaSize, source->bandana_color);
+	
+	size_t nameSize = strlen(source->name) + 1;
+	char* tempName = malloc(nameSize);
+	if (tempName == NULL) {
+		printf("Problem with malloc. can't duplicate Tribe");
+		free(tribeCpy);
+		free(tempBandanaColor);
+		return NULL;
+	}
+	tribeCpy->name = tempName;
+	strcpy_s(tribeCpy->name, nameSize, source->name);
+
+	tribeCpy->num_of_survivors = source->num_of_survivors;
+
+	Survivor** tempSurvivors = malloc(source->num_of_survivors * sizeof * tempSurvivors);
+	if (tempSurvivors == NULL) {
+		printf("Problem with malloc. can't duplicate Tribe");
+		free(tribeCpy);
+		free(tempBandanaColor);
+		free(tempName);
+		return NULL;
+	}
+	tribeCpy->survivors = tempSurvivors;
+	for (int i = 0; i < source->num_of_survivors; i++) {
+		*(tribeCpy->survivors + i) = DuplicateSurvivor(*(source->survivors + i));
+	}
+
+	return tribeCpy;
 }
 
 void SortByAge(Tribe* t) {
