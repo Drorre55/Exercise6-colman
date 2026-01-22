@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClCompile Include="MainTrain.c" />
     <ClCompile Include="Survivor.c" />
+    <ClCompile Include="Tribe.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Survivor.h" />

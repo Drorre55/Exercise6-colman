@@ -2,31 +2,33 @@
 #include <string.h>
 
 Survivor* CreateSurvivor(char* _name, float _age, int _followers) {
-	char* nameCpy = malloc(strlen(_name) * sizeof *nameCpy);
+	size_t nameSize = strlen(_name) + 1;
+	char* nameCpy = malloc(nameSize);
 	if (nameCpy == NULL) {
+		printf("Problem with malloc");
+		return NULL;
+	}
+	
+	strcpy_s(nameCpy, nameSize, _name);
+	
+	Survivor* survivorPtr = malloc(sizeof(survivorPtr));
+	if (survivorPtr == NULL) {
 		printf("Problem with malloc");
 		free(nameCpy);
 		return NULL;
 	}
+
+	survivorPtr->age = _age;
+	survivorPtr->followers = _followers;
+	survivorPtr->name = nameCpy;
 	
-	strcpy_s(nameCpy, sizeof(nameCpy), _name);
-	
-	Survivor survivor;
-	survivor.age = _age;
-	survivor.followers = _followers;
-	survivor.name = nameCpy;
-	
-	Survivor* survivorPtr = &survivor;
 	return survivorPtr;
 }
 
 Survivor* DuplicateSurvivor(Survivor* source) {
-	Survivor* survivorCpy = malloc(sizeof(*source));
-	if (survivorCpy == NULL) {
-		printf("Problem with malloc");
-		return NULL;
-	}
+	return CreateSurvivor(source->name, source->age, source->followers);
+}
 
-	survivorCpy = CreateSurvivor(source->name, source->age, source->followers);
-	return survivorCpy;
+void FreeSurvivor(Survivor* s) {
+
 }
