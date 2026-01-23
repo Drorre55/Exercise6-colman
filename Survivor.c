@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Survivor.h"
 #include <string.h>
 #include <stdio.h>
@@ -10,7 +11,7 @@ Survivor* CreateSurvivor(char* _name, float _age, int _followers) {
 		return NULL;
 	}
 	
-	strcpy_s(nameCpy, nameSize, _name);
+	strcpy(nameCpy, _name);
 	
 	Survivor* survivorPtr = malloc(sizeof *survivorPtr);
 	if (survivorPtr == NULL) {

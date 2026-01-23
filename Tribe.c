@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Tribe.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -66,7 +67,7 @@ Tribe* DuplicateTribe(Tribe* source) {
 		return NULL;
 	}
 	tribeCpy->bandana_color = tempBandanaColor;
-	strcpy_s(tribeCpy->bandana_color, bandanaSize, source->bandana_color);
+	strcpy(tribeCpy->bandana_color, source->bandana_color);
 	
 	size_t nameSize = strlen(source->name) + 1;
 	char* tempName = malloc(nameSize);
@@ -77,7 +78,7 @@ Tribe* DuplicateTribe(Tribe* source) {
 		return NULL;
 	}
 	tribeCpy->name = tempName;
-	strcpy_s(tribeCpy->name, nameSize, source->name);
+	strcpy(tribeCpy->name, source->name);
 
 	tribeCpy->num_of_survivors = source->num_of_survivors;
 
