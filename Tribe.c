@@ -1,9 +1,12 @@
 #include "Tribe.h"
+#include <stdbool.h>
+#include <stdio.h>
+
 
 Tribe* AddSurvivor(Tribe* t, Survivor* s) {
 	// if Tribe doesn't exist create it with default parameters
 	if (t == NULL) {
-		Tribe* tempTribe = malloc(sizeof(t));
+		Tribe* tempTribe = malloc(sizeof *tempTribe);
 		if (tempTribe == NULL) {
 			printf("Problem with malloc. Couldn't create Tribe");
 			return NULL;
@@ -19,7 +22,7 @@ Tribe* AddSurvivor(Tribe* t, Survivor* s) {
 	// Check if s->name already equals one of t->survivors name and update it's followers
 	else if (t->survivors) {
 		for (int i = 0; i < t->num_of_survivors; i++) {
-			Survivor* survivor = *(t->survivors + i);
+			Survivor* survivor = t->survivors[i];
 			if (strcmp(survivor->name, s->name) == 0) {
 				survivor->followers = s->followers;
 				break;
@@ -35,7 +38,7 @@ Tribe* AddSurvivor(Tribe* t, Survivor* s) {
 		}
 
 		t->survivors = tempSurvivorsPtr;
-		*(t->survivors + t->num_of_survivors) = DuplicateSurvivor(s);
+		t->survivors[t->num_of_survivors] = DuplicateSurvivor(s);
 		t->num_of_survivors++;
 	}
 
@@ -43,7 +46,7 @@ Tribe* AddSurvivor(Tribe* t, Survivor* s) {
 }
 
 Tribe* DuplicateTribe(Tribe* source) {
-	Tribe* tribeCpy = malloc(sizeof(source));
+	Tribe* tribeCpy = malloc(sizeof *tribeCpy);
 	if (tribeCpy == NULL) {
 		printf("Problem with malloc. can't duplicate Tribe");
 		return NULL;
@@ -82,14 +85,41 @@ Tribe* DuplicateTribe(Tribe* source) {
 	}
 	tribeCpy->survivors = tempSurvivors;
 	for (int i = 0; i < source->num_of_survivors; i++) {
-		*(tribeCpy->survivors + i) = DuplicateSurvivor(*(source->survivors + i));
+		tribeCpy->survivors[i] = DuplicateSurvivor(source->survivors[i]);
 	}
 
 	return tribeCpy;
 }
 
-void SortByAge(Tribe* t) {
+void MoveSurvivorFromEndToStartSlice(Survivor* survivors[], int start, int end, bool includeEdge) {
+	Survivor* survivorToMove = survivors[end];
 
+	start = includeEdge ? start - 1 : start;
+	for (int q = end - 1; q > start; q--) {
+		survivors[q + 1] = survivors[q];
+	}
+	// put current survivor in the start of the slice
+	survivors[start + 1] = survivorToMove;
+}
+
+
+void SortByAge(Tribe* t) {
+	for (int i = 1; i < t->num_of_survivors; i++) {
+		Survivor* currentSurvivor = t->survivors[i];
+
+		// iterate over the numbers to the left of current number, from closest to the farthest one
+		for (int j = i - 1; j >= 0; j--) {
+			Survivor* previousSurvivor = t->survivors[j];
+
+			if (currentSurvivor->age > previousSurvivor->age) {
+				MoveSurvivorFromEndToStartSlice(t->survivors, j, i, false);
+				break;
+			}
+			else if (j == 0) {
+				MoveSurvivorFromEndToStartSlice(t->survivors, j, i, true);
+			}
+		}
+	}
 }
 
 void SortByName(Tribe* t) {

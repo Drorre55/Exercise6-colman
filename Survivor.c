@@ -1,5 +1,6 @@
 #include "Survivor.h"
 #include <string.h>
+#include <stdio.h>
 
 Survivor* CreateSurvivor(char* _name, float _age, int _followers) {
 	size_t nameSize = strlen(_name) + 1;
