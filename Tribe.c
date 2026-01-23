@@ -32,7 +32,7 @@ Tribe* AddSurvivor(Tribe* t, Survivor* s) {
 	}
 	// Check if s->name already equals one of t->survivors name and update it's followers
 	else if (t->survivors) {
-		Survivor* survivor = GetSurvivorByName(t, s);
+		Survivor* survivor = GetSurvivorByName(t, s->name);
 		if (survivor != NULL) survivor->followers = s->followers;
 	}
 	// Add Survivor to Tribe
