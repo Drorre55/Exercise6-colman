@@ -186,5 +186,15 @@ int GetSurvivorFollowers(Tribe* t, char* name) {
 }
 
 void FreeTribe(Tribe* t) {
-
+	for (int i = 0; i < t->num_of_survivors; i++) {
+		FreeSurvivor(t->survivors[i]);
+		t->survivors[i] = NULL;
+	}
+	t->survivors = NULL;
+	free(t->name);
+	t->name = NULL;
+	free(t->bandana_color);
+	t->bandana_color = NULL;
+	free(t);
+	t = NULL;
 }

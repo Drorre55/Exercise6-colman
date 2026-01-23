@@ -12,7 +12,7 @@ Survivor* CreateSurvivor(char* _name, float _age, int _followers) {
 	
 	strcpy_s(nameCpy, nameSize, _name);
 	
-	Survivor* survivorPtr = malloc(sizeof(survivorPtr));
+	Survivor* survivorPtr = malloc(sizeof *survivorPtr);
 	if (survivorPtr == NULL) {
 		printf("Problem with malloc");
 		free(nameCpy);
@@ -31,5 +31,6 @@ Survivor* DuplicateSurvivor(Survivor* source) {
 }
 
 void FreeSurvivor(Survivor* s) {
-
+	free(s->name);
+	free(s);
 }
