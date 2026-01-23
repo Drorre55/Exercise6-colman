@@ -3,6 +3,17 @@
 #include <stdio.h>
 
 
+Survivor* GetSurvivorByName(Tribe* t, char* name)
+{
+	for (int i = 0; i < t->num_of_survivors; i++) {
+		Survivor* survivor = t->survivors[i];
+		if (strcmp(survivor->name, name) == 0) {
+			return survivor;
+		}
+	}
+	return NULL;
+}
+
 Tribe* AddSurvivor(Tribe* t, Survivor* s) {
 	// if Tribe doesn't exist create it with default parameters
 	if (t == NULL) {
@@ -21,13 +32,8 @@ Tribe* AddSurvivor(Tribe* t, Survivor* s) {
 	}
 	// Check if s->name already equals one of t->survivors name and update it's followers
 	else if (t->survivors) {
-		for (int i = 0; i < t->num_of_survivors; i++) {
-			Survivor* survivor = t->survivors[i];
-			if (strcmp(survivor->name, s->name) == 0) {
-				survivor->followers = s->followers;
-				break;
-			}
-		}
+		Survivor* survivor = GetSurvivorByName(t, s);
+		if (survivor != NULL) survivor->followers = s->followers;
 	}
 	// Add Survivor to Tribe
 	else {
@@ -154,10 +160,20 @@ int TotalFollowers(Tribe* t) {
 }
 
 int UpdateFollowers(Tribe* t, char* name, int toAdd) {
+	Survivor* survivor = GetSurvivorByName(t, name);
+	if (survivor != NULL) {
+		survivor->followers += toAdd;
+		return 1;
+	}
 	return 0;
 }
 
 int UpdateAge(Tribe* t, char* name, float newAge) {
+	Survivor* survivor = GetSurvivorByName(t, name);
+	if (survivor != NULL) {
+		survivor->age = newAge;
+		return 1;
+	}
 	return 0;
 }
 
