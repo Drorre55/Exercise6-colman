@@ -178,7 +178,11 @@ int UpdateAge(Tribe* t, char* name, float newAge) {
 }
 
 int GetSurvivorFollowers(Tribe* t, char* name) {
-	return 0;
+	Survivor* survivor = GetSurvivorByName(t, name);
+	if (survivor != NULL) {
+		return survivor->followers;
+	}
+	return -1;
 }
 
 void FreeTribe(Tribe* t) {
