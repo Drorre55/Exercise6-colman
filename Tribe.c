@@ -108,6 +108,8 @@ void SortByAge(Tribe* t) {
 		Survivor* currentSurvivor = t->survivors[i];
 
 		// iterate over the numbers to the left of current number, from closest to the farthest one
+		// put the current number in the appropriate index on the left with respect to the slice from 0 to current
+		// and push all the relavent numbers to the right
 		for (int j = i - 1; j >= 0; j--) {
 			Survivor* previousSurvivor = t->survivors[j];
 
@@ -123,7 +125,24 @@ void SortByAge(Tribe* t) {
 }
 
 void SortByName(Tribe* t) {
+	for (int i = 1; i < t->num_of_survivors; i++) {
+		Survivor* currentSurvivor = t->survivors[i];
 
+		// iterate over the numbers to the left of current number, from closest to the farthest one
+		// put the current number in the appropriate index on the left with respect to the slice from 0 to current
+		// and push all the relavent numbers to the right
+		for (int j = i - 1; j >= 0; j--) {
+			Survivor* previousSurvivor = t->survivors[j];
+
+			if (strcmp(currentSurvivor->name, previousSurvivor->name) > 0) {
+				MoveSurvivorFromEndToStartSlice(t->survivors, j, i, false);
+				break;
+			}
+			else if (j == 0) {
+				MoveSurvivorFromEndToStartSlice(t->survivors, j, i, true);
+			}
+		}
+	}
 }
 
 int TotalFollowers(Tribe* t) {
