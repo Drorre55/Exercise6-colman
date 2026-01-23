@@ -146,7 +146,11 @@ void SortByName(Tribe* t) {
 }
 
 int TotalFollowers(Tribe* t) {
-	return 0;
+	int sumFollowers = 0;
+	for (int i = 0; i < t->num_of_survivors; i++) {
+		sumFollowers += t->survivors[i]->followers;
+	}
+	return sumFollowers;
 }
 
 int UpdateFollowers(Tribe* t, char* name, int toAdd) {
